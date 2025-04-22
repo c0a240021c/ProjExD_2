@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -31,7 +32,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 
 
 
-
+    
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -63,9 +64,12 @@ def main():
 
         #練習4:こうかとんと爆弾の衝突
         if kk_rct.colliderect(bb_rct):
-            print("Game Over")
+            #演習1:ゲームオーバー関数を呼び出す
+            gameover(screen)
+            
             return
 
+        
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
@@ -99,6 +103,30 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
+
+        
+
+
+#演習1:ゲームオーバー時
+def gameover(screen: pg.Surface) -> None:
+    """
+    引数:screen,font
+    戻り値:こうかとんと爆弾がぶつかったときに画面を暗くしてGame Overを表示
+    """
+    font = pg.font.Font(None,80)
+    black_img = pg.Surface((WIDTH,HEIGHT))
+    kktn_lye = pg.image.load("fig/8.png")
+    kktn_lye2 = pg.image.load("fig/8.png")
+    black_img.set_alpha(128)  #半透明にする
+    txt = font.render("Game Over", True, (255,255,255))  #Game Overと表示。255は色
+    screen.blit(black_img, [0,0])
+    screen.blit(txt,[400,300])
+    screen.blit(kktn_lye, [340,300])
+    screen.blit(kktn_lye2, [730,300])
+    pg.display.update()
+    time.sleep(5)
+
+
 
 
 if __name__ == "__main__":
