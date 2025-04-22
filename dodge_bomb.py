@@ -31,6 +31,36 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     return yoko, tate
 
 
+#演習1:ゲームオーバー時
+def gameover(screen: pg.Surface) -> None:
+    """
+    引数:screen,font
+    戻り値:こうかとんと爆弾がぶつかったときに画面を暗くしてGame Overを表示
+    """
+    font = pg.font.Font(None,80)
+    black_img = pg.Surface((WIDTH,HEIGHT))
+    kktn_lye = pg.image.load("fig/8.png")
+    kktn_lye2 = pg.image.load("fig/8.png")
+    black_img.set_alpha(128)  #半透明にする
+    txt = font.render("Game Over", True, (255,255,255))  #Game Overと表示。255は色
+    screen.blit(black_img, [0,0])
+    screen.blit(txt,[400,300])
+    screen.blit(kktn_lye, [340,300])
+    screen.blit(kktn_lye2, [730,300])
+    pg.display.update()
+    time.sleep(5)
+
+#演習2:爆弾のサイズと速度の変更
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+
+    bb_accs = [a for a in range (1,11)]
+    bb_imgs = []
+    for r in range(1,11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_img.set_colorkey((0,0,0))
+        bb_imgs.append(bb_img)
+    return bb_accs,bb_imgs
 
     
 
@@ -66,7 +96,6 @@ def main():
         if kk_rct.colliderect(bb_rct):
             #演習1:ゲームオーバー関数を呼び出す
             gameover(screen)
-            
             return
 
         
@@ -87,7 +116,6 @@ def main():
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  #
 
         #練習2:爆弾の移動
-        bb_rct.move_ip(vx,vy)
 
         #練習3:画面外に爆弾がでないようにする
         yoko, tate = check_bound(bb_rct)
@@ -97,34 +125,20 @@ def main():
             vy *= -1
 
         screen.blit(kk_img, kk_rct)
+        #演習2:爆弾のサイズと速度
+        bb_accs , bb_imgs = init_bb_imgs()
+        avx = vx*bb_accs[min(tmr//500,9)]
+        bb_img = bb_imgs[min(tmr//500,9)]
 
+        bb_rct.move_ip(avx,vy)
         #練習2:爆弾の表示
         screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
         clock.tick(50)
 
-        
 
 
-#演習1:ゲームオーバー時
-def gameover(screen: pg.Surface) -> None:
-    """
-    引数:screen,font
-    戻り値:こうかとんと爆弾がぶつかったときに画面を暗くしてGame Overを表示
-    """
-    font = pg.font.Font(None,80)
-    black_img = pg.Surface((WIDTH,HEIGHT))
-    kktn_lye = pg.image.load("fig/8.png")
-    kktn_lye2 = pg.image.load("fig/8.png")
-    black_img.set_alpha(128)  #半透明にする
-    txt = font.render("Game Over", True, (255,255,255))  #Game Overと表示。255は色
-    screen.blit(black_img, [0,0])
-    screen.blit(txt,[400,300])
-    screen.blit(kktn_lye, [340,300])
-    screen.blit(kktn_lye2, [730,300])
-    pg.display.update()
-    time.sleep(5)
 
 
 
