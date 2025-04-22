@@ -4,7 +4,6 @@ import sys
 import time
 import pygame as pg
 
-
 WIDTH, HEIGHT = 1100, 650
 DELTA = {
     pg.K_UP:(0,-5),
@@ -29,7 +28,6 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:  #画面外だったら
         tate = False
     return yoko, tate
-
 
 #演習1:ゲームオーバー時
 def gameover(screen: pg.Surface) -> None:
@@ -62,8 +60,6 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
         bb_imgs.append(bb_img)
     return bb_accs,bb_imgs
 
-    
-
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -83,7 +79,6 @@ def main():
     vx = +5
     vy = +5
 
-
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -98,8 +93,6 @@ def main():
             gameover(screen)
             return
 
-        
-
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
 
@@ -108,7 +101,6 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
 
-        
         kk_rct.move_ip(sum_mv)
 
         #練習3:画面外にこうかとんがでないようにする
@@ -136,12 +128,6 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
-
-
-
-
-
 
 if __name__ == "__main__":
     pg.init()
