@@ -61,6 +61,12 @@ def main():
                 return
         screen.blit(bg_img, [0, 0]) 
 
+        #練習4:こうかとんと爆弾の衝突
+        if kk_rct.colliderect(bb_rct):
+            print("Game Over")
+            return
+
+
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
 
